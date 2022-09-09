@@ -1,17 +1,30 @@
 /**
- * @param {number[]} arr
- * @return {boolean}
+ * @param {number[]} target
+ * @param {number} n
+ * @return {string[]}
  */
-// 1) for each element, check whether a number double its
-//    value exists
-var checkIfExist = function (arr) {
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = 0; j < arr.length; j++) {
-      if (i !== j && arr[i] === 2 * arr[j]) return true;
+// if next number in target is equal to next number in stream
+//    push once
+// if next number in target is greater than next number in stream
+//    find the difference and push that many times, pop that many times, then push
+var buildArray = function (target, n) {
+  let streamNum = 1;
+  let operations = [];
+
+  for (const targetNum of target) {
+    if (targetNum > streamNum) {
+      for (let i = 0; i < targetNum - streamNum; i++) {
+        operations.push("Push");
+        operations.push("Pop");
+      }
+      streamNum = targetNum;
     }
+
+    if (targetNum === streamNum) operations.push("Push");
+    streamNum++;
   }
 
-  return false;
+  return operations;
 };
 
-console.log(checkIfExist([-2, 0, 10, -19, 4, 6, -8]));
+console.log(buildArray([2, 3, 4, 5, 8, 9, 10], 10));
