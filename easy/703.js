@@ -1,0 +1,30 @@
+/**
+ * @param {number} k
+ * @param {number[]} nums
+ */
+var KthLargest = function (k, nums) {
+  this.k = k;
+  this.nums = [...nums].sort((a, b) => (a > b ? -1 : 1));
+};
+
+/**
+ * @param {number} val
+ * @return {number}
+ */
+KthLargest.prototype.add = function (val) {
+  for (let i = 0; i <= this.nums.length; i++)
+    if (this.nums[i] <= val) {
+      this.nums = [...this.nums.slice(0, i), val, ...this.nums.slice(i)];
+      break;
+    } else if (i === this.nums.length) {
+      this.nums.push(val);
+      break;
+    }
+  return this.nums[this.k - 1];
+};
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * var obj = new KthLargest(k, nums)
+ * var param_1 = obj.add(val)
+ */
