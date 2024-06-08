@@ -4,17 +4,17 @@
  * @return {boolean}
  */
 var checkSubarraySum = function (nums, k) {
-  if (nums.some((num, idx) => num === 0 && nums[idx + 1] === 0)) return true;
-  if (nums.reduce((sum, num) => sum + num, 0) < k) return false;
+  if (nums.length < 2) return false;
 
-  for (let i = 0; i < nums.length; i++) {
-    let sum = nums[i];
-    for (let j = i + 1; j < nums.length; j++) {
-      sum += nums[j];
-      if (sum && sum < k) continue;
-      if (sum % k === 0) return true;
-    }
+  const set = new Set([0]);
+  let sum = 0;
+  for (let i = 0; i < nums.length - 1; i++) {
+    sum = (sum + nums[i]) % k;
+    if (set.has((sum + nums[i + 1]) % k)) return true;
+    set.add(sum);
   }
 
   return false;
 };
+
+console.log(checkSubarraySum([23, 2, 4, 6, 7], 6));
